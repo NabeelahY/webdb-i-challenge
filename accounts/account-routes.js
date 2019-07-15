@@ -36,4 +36,17 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.put("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    await Accounts.updateAccount(id, req.body);
+    const editedAccount = await Accounts.getById(id);
+    res.status(200).json(editedAccount);
+  } catch {
+    res.status(500).json({
+      message: err.toString()
+    });
+  }
+});
+
 module.exports = router;

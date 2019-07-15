@@ -4,7 +4,8 @@ const db = require("../data/dbConfig");
 module.exports = {
   get,
   getById,
-  createAccount
+  createAccount,
+  updateAccount
 };
 
 function get() {
@@ -17,4 +18,10 @@ function getById(id) {
 
 function createAccount({ name, budget }) {
   return db("accounts").insert({ name, budget });
+}
+
+function updateAccount(id, { name, budget }) {
+  return db("accounts")
+    .where({ id })
+    .update({ name, budget });
 }
