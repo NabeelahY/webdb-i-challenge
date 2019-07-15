@@ -13,6 +13,17 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/:id", async (req, res) => {
+  try {
+    const account = await Accounts.getById(req.params.id);
+    res.json(account[0]);
+  } catch (error) {
+    res.status(500).json({
+      message: "Error retrieving the accounts"
+    });
+  }
+});
+
 router.post("/", async (req, res) => {
   try {
     const newAccountId = await Accounts.createAccount(req.body);
