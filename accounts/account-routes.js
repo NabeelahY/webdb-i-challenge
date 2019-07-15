@@ -13,4 +13,16 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.post("/", async (req, res) => {
+  try {
+    const newAccountId = await Accounts.createAccount(req.body);
+    const newAccount = await Accounts.getById(newAccountId[0]);
+    res.status(201).json(newAccount);
+  } catch (error) {
+    res.status(500).json({
+      message: error.toString()
+    });
+  }
+});
+
 module.exports = router;

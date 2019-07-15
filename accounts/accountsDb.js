@@ -1,11 +1,20 @@
 const knex = require("knex");
-const knexConfig = require("../knexfile.js");
-const db = knex(knexConfig.development);
+const db = require("../data/dbConfig");
 
 module.exports = {
-    get
-}
+  get,
+  getById,
+  createAccount
+};
 
 function get() {
   return db("accounts");
+}
+
+function getById(id) {
+  return db("accounts").where({ id });
+}
+
+function createAccount({ name, budget }) {
+  return db("accounts").insert({ name, budget });
 }
