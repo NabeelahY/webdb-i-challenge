@@ -1,5 +1,6 @@
 const express = require("express");
 const Accounts = require("./accountsDb");
+const { validateId, validateBody } = require("../middleware");
 const router = express.Router();
 
 router.get("/", async (req, res) => {
@@ -13,7 +14,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", validateId, async (req, res) => {
   try {
     const account = await Accounts.getById(req.params.id);
     res.json(account[0]);
@@ -24,7 +25,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", validateBody, async (req, res) => {
   try {
     const newAccountId = await Accounts.createAccount(req.body);
     const newAccount = await Accounts.getById(newAccountId[0]);
@@ -36,7 +37,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", validateId, validateBody, async (req, res) => {
   const { id } = req.params;
   try {
     await Accounts.updateAccount(id, req.body);
@@ -49,14 +50,14 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", validateId, async (req, res) => {
   const { id } = req.params;
   try {
-    const archiveAccount = await Accounts.deleteAccount(id);
-    res.status(200).json(archiveAccount);
+    await Accounts.deleteAccount(id);
+    res.status(200).json({ deleted_account: req.account });
   } catch (error) {
     res.status(500).json({
-      message: "Internal server error"
+      message: "Error deleting the account"
     });
   }
 });
