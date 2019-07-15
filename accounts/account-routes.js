@@ -49,4 +49,16 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+router.delete("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const archiveAccount = await Accounts.deleteAccount(id);
+    res.status(200).json(archiveAccount);
+  } catch (error) {
+    res.status(500).json({
+      message: "Internal server error"
+    });
+  }
+});
+
 module.exports = router;

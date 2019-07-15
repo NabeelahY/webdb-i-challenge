@@ -5,7 +5,8 @@ module.exports = {
   get,
   getById,
   createAccount,
-  updateAccount
+  updateAccount,
+  deleteAccount
 };
 
 function get() {
@@ -24,4 +25,11 @@ function updateAccount(id, { name, budget }) {
   return db("accounts")
     .where({ id })
     .update({ name, budget });
+}
+
+function deleteAccount(id) {
+  // DELETE FROM users WHERE id = id;
+  return db("accounts")
+    .where({ id })
+    .del();
 }
